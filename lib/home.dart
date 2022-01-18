@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'data/wheel_item.dart';
 
-import 'components/board.dart';
+import 'components/wheel.dart';
 import 'components/wheel_icon.dart';
 
 class HomePage extends StatefulWidget {
@@ -61,7 +61,7 @@ class _HomePageState extends State<HomePage>
             return Stack(
               alignment: Alignment.center,
               children: <Widget>[
-                BoardView(items: _items, current: _current, angle: _angle),
+                Wheel(items: _items, current: _current, angle: _angle),
                 _buildGo(),
                 _buildResult(_value),
               ],

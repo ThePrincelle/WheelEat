@@ -6,13 +6,13 @@ import '../data/wheel_item.dart';
 import 'wheel_icon.dart';
 import 'arrow.dart';
 
-class BoardView extends StatefulWidget {
+class Wheel extends StatefulWidget {
   final double angle;
   final double current;
   final List<WheelItem> items;
   final double maxRadius;
 
-  const BoardView({
+  const Wheel({
     Key? key,
     required this.angle,
     required this.current,
@@ -22,11 +22,11 @@ class BoardView extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return _BoardViewState();
+    return _WheelState();
   }
 }
 
-class _BoardViewState extends State<BoardView> {
+class _WheelState extends State<Wheel> {
   Size get size => Size(
       min(MediaQuery.of(context).size.width * 0.8, widget.maxRadius),
       min(MediaQuery.of(context).size.width * 0.8, widget.maxRadius));
