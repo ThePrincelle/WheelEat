@@ -4,6 +4,8 @@ import '../constants.dart';
 // TODO: Remove mock data when Google Places API is implemented
 import '../data/mocks/restaurant.dart';
 
+import 'restaurant_details.dart';
+
 import '../components/page_title.dart';
 import '../components/search_bar.dart';
 import '../components/restaurant_list_tile.dart';
@@ -35,8 +37,17 @@ class _HomePageState extends State<HomePage> {
                   itemCount: restaurants.length,
                   itemBuilder: (_, index) => RestaurantListTile(
                     restaurant: restaurants[index],
-                    selected: index == 1, // TODO: Change this with dynamic data
-                    onTap: () {}, // TODO: Update this onTap
+                    // selected: index == 1, // TODO: Change this with dynamic data
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => RestaurantDetailsPage(
+                            restaurant: restaurants[index],
+                          ),
+                        ),
+                      );
+                    },
                   ),
                   separatorBuilder: (_, index) =>
                       const SizedBox(height: defaultPadding / 2),
