@@ -1,8 +1,10 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 
+import 'dart:math';
+
 class ArrowView extends StatelessWidget {
+  const ArrowView({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Align(
@@ -10,11 +12,11 @@ class ArrowView extends StatelessWidget {
       child: Transform.rotate(
         angle: pi,
         child: Padding(
-          padding: EdgeInsets.only(top: 80),
+          padding: const EdgeInsets.only(top: 80),
           child: ClipPath(
             clipper: _ArrowClipper(),
             child: Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   gradient: LinearGradient(
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
