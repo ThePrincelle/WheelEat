@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-import 'home.dart';
+import 'constants.dart';
+
+import 'pages/_layout.dart';
 
 void main() => runApp(const MyApp());
 
@@ -10,10 +13,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'WheelEat',
+      theme: ThemeData(
+        primarySwatch: Colors.amber,
+        textTheme: GoogleFonts.montserratTextTheme(Theme.of(context).textTheme)
+            .apply(bodyColor: textColor),
+      ),
+      home: const Layout(),
       debugShowCheckedModeBanner: false,
-      title: 'Wheeleat',
-      theme: ThemeData(primarySwatch: Colors.blue),
-      home: const HomePage(),
     );
   }
 }
