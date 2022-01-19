@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'constants.dart';
 
-import 'pages/home.dart';
+import 'pages/_layout.dart';
 
 void main() {
   runApp(const MyApp());
@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
         textTheme: GoogleFonts.montserratTextTheme(Theme.of(context).textTheme)
             .apply(bodyColor: textColor),
       ),
-      home: const HomePage(),
+      home: const Layout(),
       debugShowCheckedModeBanner: false,
     );
   }
