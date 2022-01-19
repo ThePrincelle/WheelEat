@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../data/wheel_item.dart';
+import '../../data/wheel_item.dart';
 
 class WheelIcon extends StatelessWidget {
   final WheelItem item;

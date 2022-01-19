@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-import '../data/wheel_item.dart';
+import '../../data/wheel_item.dart';
 import 'wheel_icon.dart';
 import 'arrow.dart';
 
