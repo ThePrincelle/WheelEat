@@ -53,7 +53,7 @@ class _WheelPageState extends State<WheelPage>
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: defaultPadding * 4),
-            const PageTitle('HUNGRY?!'),
+            const PageTitle('LET FATE DECIDE,'),
             const SizedBox(height: defaultPadding * 2),
             Expanded(
               child: AnimatedBuilder(
@@ -103,8 +103,8 @@ class _WheelPageState extends State<WheelPage>
           height: 72,
           width: 72,
           child: const Text(
-            "GO",
-            style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold),
+            "SPIN",
+            style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w900),
           ),
         ),
         onTap: _animation,
