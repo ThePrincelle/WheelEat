@@ -3,14 +3,17 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 import './models/place.dart';
+import './models/place_details.dart';
 
 import '../data/restaurant.dart';
+
+import './models/restaurants_response.dart';
 
 final googleApiKey = dotenv.env['GOOGLE_API_KEY'] ?? '';
 
 class Places {
   // A function that returns a list of places with a given keyword.
-  Future<List<dynamic>> getPlacesFromCoordinates(
+  Future<RestaurantsResponse> getPlacesFromCoordinates(
       String latitude, String longitude,
       [String? address]) async {
     // Fetch Google Places API data by coordinates with given type and language
@@ -34,14 +37,20 @@ class Places {
     final restaurants =
         places.map<Restaurant>((data) => Restaurant.fromPlace(data)).toList();
 
-    // For each restaurant, print the toString.
-    restaurants.forEach((restaurant) => print(restaurant.toString()));
+    // If there is no address provided, get it from the coordinates.
+    var formattedAddress = "";
+    if (address == null) {
+      formattedAddress = await getAddressFromCoordinates(latitude, longitude);
+    } else {
+      formattedAddress = address;
+    }
 
-    return restaurants;
+    return RestaurantsResponse(
+        restaurants: restaurants, address: formattedAddress);
   }
 
   // A function that returns a list of places with a given address.
-  Future<List<dynamic>> getPlacesFromAddress(String address) async {
+  Future<RestaurantsResponse> getPlacesFromAddress(String address) async {
     // If address is defined, continue, else return empty list
     if (address != "") {
       // Get address coordinates with Google API
@@ -61,16 +70,16 @@ class Places {
         // Get places from coordinates
         return getPlacesFromCoordinates(latitude, longitude, address);
       } else {
-        return [];
+        return RestaurantsResponse(restaurants: [], address: address);
       }
     } else {
-      return [];
+      return RestaurantsResponse(restaurants: [], address: "");
     }
   }
 }
 
 // Get details from placeId
-Future<dynamic> getPlaceDetails(Restaurant restaurant) async {
+Future<PlaceDetails?> getPlaceDetails(Restaurant restaurant) async {
   if (restaurant.placeId != "") {
     // Fetch Google Places API data by placeId
     final Uri uri = Uri.https(
@@ -83,8 +92,37 @@ Future<dynamic> getPlaceDetails(Restaurant restaurant) async {
     // Decode the JSON response
     var result = json.decode(response.body)["result"];
 
-    return result;
+    // Get place details from result
+    var placeDetails = PlaceDetails.fromJson(result);
+
+    // Print place details
+    print(placeDetails.toString());
+
+    return placeDetails;
   } else {
     return null;
+  }
+}
+
+// Get address from coordinates
+Future<String> getAddressFromCoordinates(
+    String latitude, String longitude) async {
+  // Fetch Google Places API data by coordinates with given type and language
+  final Uri uri = Uri.https("maps.googleapis.com", "/maps/api/geocode/json", {
+    "latlng": "$latitude,$longitude",
+    "language": "fr",
+    "key": googleApiKey
+  });
+
+  final response = await http.get(uri);
+
+  // Decode the JSON response
+  var results = json.decode(response.body)["results"];
+
+  // If there is a result, return the first one
+  if (results.length > 0) {
+    return results[0]["formatted_address"];
+  } else {
+    return "";
   }
 }
