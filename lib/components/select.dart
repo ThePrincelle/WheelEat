@@ -5,14 +5,12 @@ import '../constants.dart';
 class Select extends StatefulWidget {
   final List<String> listValue;
   final String curentValue;
-  final Widget? child;
-  //final Function setter;
+  final Function setter;
 
   const Select(
     this.listValue,
     this.curentValue,
-    this.child,
-    //this.setter,
+    this.setter,
   { Key? key,
   }) : super(key: key);
 
@@ -22,8 +20,19 @@ class Select extends StatefulWidget {
 
 
 class _SelectState extends State<Select> {
-  //String _selectValue;
+  String _selectValue = '';
 
+  void changeValue (newValue)
+  {
+      widget.setter(newValue);
+      setState(() { _selectValue = newValue; });
+  }
+
+  @override 
+  void initState() {
+    setState(() { _selectValue = widget.curentValue; });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,9 +45,9 @@ class _SelectState extends State<Select> {
         );
       }).toList(),
       onChanged: (_) {
-        //widget.setter(_);
+        changeValue(_);
       },
-      value: widget.curentValue,
+      value:  _selectValue,
     );
   }
 

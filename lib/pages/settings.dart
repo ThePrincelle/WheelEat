@@ -29,18 +29,12 @@ class SettingsPage extends StatelessWidget {
                   setting: settings.values.toList()[index],
                   onTap: () {
                     if (settings.values.toList()[index].type == typeSetting.bool) {
-                      var setting = settings.values.toList()[index];
-                      setting.setBoolValue(setting.getBoolValue());
+                      var setting = settings.values.toList()[index] as SettingBool;
+                      setting.saveValue(setting.status);
                     }
                     if (settings.values.toList()[index].type == typeSetting.openner) {
-                        /*Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => RestaurantDetailsPage(
-                            restaurant: restaurants[index],
-                          ),
-                        ),
-                      ); //Todo : Research Value from Shared preference*/
+
+                      //Todo: Ouverture de La popup inscrite dans le settings
                     }
                   },
                 ),

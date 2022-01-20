@@ -18,6 +18,11 @@ class SettingsListTile extends StatelessWidget {
     this.onTap,
   }) : super(key: key);
 
+  void setSelectValue(String newValue)
+  {
+    setting.saveValue(newValue);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -51,7 +56,7 @@ class SettingsListTile extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               if (setting.type == typeSetting.bool)
-                const Toogle(false), //Todo : Research Value from Shared preference
+                Toogle((setting as SettingBool).status),
               if (setting.type == typeSetting.openner)
                 const Icon(
                   Icons.arrow_forward_ios_rounded,
@@ -59,7 +64,7 @@ class SettingsListTile extends StatelessWidget {
                   size: 20,
                 ),
               if (setting.type == typeSetting.select)
-                 Select(setting.selectValue, setting.selectValue[setting.selectValue.length-1], null, /*setter*/)
+                 Select(setting.selectValue, (setting as SettingSelect).selectedValue, setSelectValue)
             ],
         ),
         

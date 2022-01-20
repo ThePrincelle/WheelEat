@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../constants.dart';
-import '../data/setting.dart';
 
 class SettingIcon extends StatelessWidget {
   final IconData iconData;
