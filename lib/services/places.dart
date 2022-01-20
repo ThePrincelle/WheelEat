@@ -38,4 +38,32 @@ class Places {
 
     return restaurants;
   }
+
+  // A function that returns a list of places with a given address.
+  Future<List<dynamic>> getPlacesFromAddress(String address) async {
+    // If address is defined, continue, else return empty list
+    if (address != "") {
+      // Get address coordinates with Google API
+      final Uri uri = Uri.https("maps.googleapis.com", "/maps/api/geocode/json",
+          {"address": address, "key": googleApiKey});
+
+      final response = await http.get(uri);
+      var results = json.decode(response.body)["results"];
+      if (results.length > 0) {
+        // Get first result from results
+        var result = results[0];
+        // Get coordinates from first result
+        var coordinates = result["geometry"]["location"];
+        // Get latitude and longitude from coordinates
+        var latitude = coordinates["lat"].toString();
+        var longitude = coordinates["lng"].toString();
+        // Get places from coordinates
+        return getPlacesFromCoordinates(latitude, longitude);
+      } else {
+        return [];
+      }
+    } else {
+      return [];
+    }
+  }
 }

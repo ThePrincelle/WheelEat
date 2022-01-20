@@ -13,10 +13,8 @@ Future main() async {
   await dotenv.load(fileName: ".env");
 
   // Test places
-  // Default coordinates for Pole API, Illkirch, France.
-  const latitude = '48.5254981';
-  const longitude = '7.7376844';
-  print(Places().getPlacesFromCoordinates(latitude, longitude));
+  // Default address for Pole API, Illkirch, France.
+  print(Places().getPlacesFromAddress("Pole API, Illkirch, France"));
 
   // Start the app
   runApp(const MyApp());
