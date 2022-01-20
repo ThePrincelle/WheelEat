@@ -26,7 +26,10 @@ class Places {
       "key": googleApiKey
     });
 
-    final response = await http.get(uri);
+    final response = await http.get(uri, headers: {
+      "Accept": "application/json",
+      "Access-Control_Allow_Origin": "*"
+    });
 
     // Decode the JSON response
     var results = json.decode(response.body)["results"];
@@ -57,7 +60,10 @@ class Places {
       final Uri uri = Uri.https("maps.googleapis.com", "/maps/api/geocode/json",
           {"address": address, "language": "fr", "key": googleApiKey});
 
-      final response = await http.get(uri);
+      final response = await http.get(uri, headers: {
+        "Accept": "application/json",
+        "Access-Control_Allow_Origin": "*"
+      });
       var results = json.decode(response.body)["results"];
       if (results.length > 0) {
         // Get first result from results
@@ -67,8 +73,12 @@ class Places {
         // Get latitude and longitude from coordinates
         var latitude = coordinates["lat"].toString();
         var longitude = coordinates["lng"].toString();
+
+        // Get formattedAddress from result
+        var formattedAddress = result["formatted_address"];
+
         // Get places from coordinates
-        return getPlacesFromCoordinates(latitude, longitude, address);
+        return getPlacesFromCoordinates(latitude, longitude, formattedAddress);
       } else {
         return RestaurantsResponse(restaurants: [], address: address);
       }
@@ -87,7 +97,10 @@ Future<PlaceDetails?> getPlaceDetails(Restaurant restaurant) async {
         "/maps/api/place/details/json",
         {"placeid": restaurant.placeId, "language": "fr", "key": googleApiKey});
 
-    final response = await http.get(uri);
+    final response = await http.get(uri, headers: {
+      "Accept": "application/json",
+      "Access-Control_Allow_Origin": "*"
+    });
 
     // Decode the JSON response
     var result = json.decode(response.body)["result"];
@@ -114,7 +127,10 @@ Future<String> getAddressFromCoordinates(
     "key": googleApiKey
   });
 
-  final response = await http.get(uri);
+  final response = await http.get(uri, headers: {
+    "Accept": "application/json",
+    "Access-Control_Allow_Origin": "*"
+  });
 
   // Decode the JSON response
   var results = json.decode(response.body)["results"];

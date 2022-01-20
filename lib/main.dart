@@ -8,6 +8,7 @@ import 'constants.dart';
 import 'pages/_layout.dart';
 
 import './services/places.dart';
+import './services/gps.dart';
 
 Future main() async {
   // Load the .env file
@@ -15,7 +16,13 @@ Future main() async {
 
   // Test places
   // Default address for Pole API, Illkirch, France.
-  print(Places().getPlacesFromAddress("Pole API, Illkirch, France"));
+  var restaurants =
+      await Places().getPlacesFromAddress("Pole API, Illkirch, France");
+  print(restaurants.toString());
+
+  // Test GPS
+  var position = await getUserPosition();
+  print(position.toString());
 
   // Start the app
   runApp(const MyApp());

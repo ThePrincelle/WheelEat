@@ -43,5 +43,12 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Cette application utilise votre position pour récupérer les établissements aux alentours. Vous pouvez aussi passer par une adresse.</string>
+	<key>NSLocationTemporaryUsageDescriptionDictionary</key>
+	<dict>
+	<key>GetTemporaryLocation</key>
+	<string>Cette application nécessite temporairement votre position pour récupérer les établissements aux alentours. Vous pouvez aussi passer par une adresse.</string>
+	</dict>
 </dict>
 </plist>
