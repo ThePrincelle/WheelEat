@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
@@ -25,9 +26,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Set iOS status bar with dark text
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
+      statusBarColor: Colors.transparent,
+    ));
+
     return MaterialApp(
       title: 'WheelEat',
       theme: ThemeData(
+        brightness: Brightness.light,
         primarySwatch: Colors.amber,
         textTheme: GoogleFonts.montserratTextTheme(Theme.of(context).textTheme)
             .apply(bodyColor: textColor),
