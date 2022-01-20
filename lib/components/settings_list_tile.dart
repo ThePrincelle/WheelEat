@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import '../constants.dart';
 import '../data/setting.dart';
 
-import 'opened_closed_badge.dart';
+import 'toogle_badge.dart';
+import 'select.dart';
 
 class SettingsListTile extends StatelessWidget {
   final Setting setting;
@@ -12,7 +13,7 @@ class SettingsListTile extends StatelessWidget {
 
   const SettingsListTile({
     Key? key,
-    this.setting = const Setting(title: 'Placeholder'),
+    required this.setting,
     this.selected = false,
     this.onTap,
   }) : super(key: key);
@@ -45,21 +46,25 @@ class SettingsListTile extends StatelessWidget {
           softWrap: false,
           style: const TextStyle(fontWeight: FontWeight.w900),
         ),
-        subtitle: Padding(
-          padding: const EdgeInsets.symmetric(vertical: defaultPadding / 4),
-          child: Row( // Change for toogle in boolean setting
+        trailing: 
+        Row(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              OpenedClosedBadge(setting.isChecked),
-              const Spacer(),
+              if (setting.type == typeSetting.bool)
+                const Toogle(false), //Todo : Research Value from Shared preference
+              if (setting.type == typeSetting.openner)
+                const Icon(
+                  Icons.arrow_forward_ios_rounded,
+                  color: textColor,
+                  size: 20,
+                ),
+              if (setting.type == typeSetting.select)
+                 Select(setting.selectValue, setting.selectValue[setting.selectValue.length-1], null, /*setter*/)
             ],
-          ),
         ),
-        trailing: const Icon(
-          Icons.arrow_forward_ios_rounded,
-          color: textColor,
-          size: 20,
-        ),
+        
       ),
     );
   }
+
 }

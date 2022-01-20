@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../data/setting.dart';
 
 import '../constants.dart';
@@ -27,10 +26,22 @@ class SettingsPage extends StatelessWidget {
               child: ListView.separated(
                 itemCount: settings.length,
                 itemBuilder: (_, index) => SettingsListTile(
-                  setting: settings[index],
-                  // selected: index == 1, // TODO: Change this with dynamic data
+                  setting: settings.values.toList()[index],
                   onTap: () {
-                    
+                    if (settings.values.toList()[index].type == typeSetting.bool) {
+                      var setting = settings.values.toList()[index];
+                      setting.setBoolValue(setting.getBoolValue());
+                    }
+                    if (settings.values.toList()[index].type == typeSetting.openner) {
+                        /*Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => RestaurantDetailsPage(
+                            restaurant: restaurants[index],
+                          ),
+                        ),
+                      ); //Todo : Research Value from Shared preference*/
+                    }
                   },
                 ),
                 separatorBuilder: (_, index) =>

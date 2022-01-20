@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
 
 import '../constants.dart';
+import '../data/setting.dart';
 
 class SettingIcon extends StatelessWidget {
   final IconData iconData;
-  final Color backgroundColor;
 
   const SettingIcon({
     Key? key,
     this.iconData = Icons.backpack,
-    this.backgroundColor = primaryColor,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return CircleAvatar(
-      backgroundColor: backgroundColor,
+      backgroundColor: primaryColor.withOpacity(0.5),
       child: Icon(
         iconData
       ),
