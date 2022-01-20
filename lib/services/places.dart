@@ -11,7 +11,8 @@ final googleApiKey = dotenv.env['GOOGLE_API_KEY'] ?? '';
 class Places {
   // A function that returns a list of places with a given keyword.
   Future<List<dynamic>> getPlacesFromCoordinates(
-      String latitude, String longitude) async {
+      String latitude, String longitude,
+      [String? address]) async {
     // Fetch Google Places API data by coordinates with given type and language
     final Uri uri =
         Uri.https("maps.googleapis.com", "/maps/api/place/nearbysearch/json", {
@@ -58,12 +59,32 @@ class Places {
         var latitude = coordinates["lat"].toString();
         var longitude = coordinates["lng"].toString();
         // Get places from coordinates
-        return getPlacesFromCoordinates(latitude, longitude);
+        return getPlacesFromCoordinates(latitude, longitude, address);
       } else {
         return [];
       }
     } else {
       return [];
     }
+  }
+}
+
+// Get details from placeId
+Future<dynamic> getPlaceDetails(Restaurant restaurant) async {
+  if (restaurant.placeId != "") {
+    // Fetch Google Places API data by placeId
+    final Uri uri = Uri.https(
+        "maps.googleapis.com",
+        "/maps/api/place/details/json",
+        {"placeid": restaurant.placeId, "language": "fr", "key": googleApiKey});
+
+    final response = await http.get(uri);
+
+    // Decode the JSON response
+    var result = json.decode(response.body)["result"];
+
+    return result;
+  } else {
+    return null;
   }
 }

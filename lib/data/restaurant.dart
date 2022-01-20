@@ -13,6 +13,7 @@ class Restaurant {
   final String? image;
   final String? type;
   final Map<String, String>? schedule;
+  final String placeId;
 
   const Restaurant({
     this.title = 'Placeholder',
@@ -27,12 +28,13 @@ class Restaurant {
     this.iconBackgroundColor,
     this.type,
     this.schedule,
+    this.placeId = '',
   });
 
   // To String method for debugging
   @override
   String toString() {
-    return 'Restaurant{title: $title, category: $category, isOpened: $isOpened, rating: $rating, priceLevel: $priceLevel, address: $address, phone: $phone, image: $image, icon: $icon, type: $type, schedule: $schedule}';
+    return 'Restaurant{title: $title, category: $category, isOpened: $isOpened, rating: $rating, priceLevel: $priceLevel, address: $address, phone: $phone, image: $image, icon: $icon, type: $type, schedule: $schedule, placeId: $placeId}';
   }
 
   // Map from Place object
@@ -48,6 +50,7 @@ class Restaurant {
       iconBackgroundColor: place.iconBackgroundColor,
       image: place.photos?[0].uri.toString(),
       type: place.types[0],
+      placeId: place.placeId,
       // schedule: place.schedule,
     );
   }
