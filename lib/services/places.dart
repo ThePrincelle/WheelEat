@@ -45,7 +45,7 @@ class Places {
     if (address != "") {
       // Get address coordinates with Google API
       final Uri uri = Uri.https("maps.googleapis.com", "/maps/api/geocode/json",
-          {"address": address, "key": googleApiKey});
+          {"address": address, "language": "fr", "key": googleApiKey});
 
       final response = await http.get(uri);
       var results = json.decode(response.body)["results"];
