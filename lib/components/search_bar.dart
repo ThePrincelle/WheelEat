@@ -2,38 +2,46 @@ import 'package:flutter/material.dart';
 
 import '../constants.dart';
 
-class SearchBar extends StatelessWidget {
-  final VoidCallback? onSearch;
+class SearchBar extends StatefulWidget {
+  final String hintText;
+  final Function(String?)? onSearch;
 
   const SearchBar({
     Key? key,
+    required this.hintText,
     this.onSearch,
   }) : super(key: key);
+
+  @override
+  State<SearchBar> createState() => _SearchBarState();
+}
+
+class _SearchBarState extends State<SearchBar> {
+  final _controller = TextEditingController();
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-        IconButton(
-          // TODO: Update this onPressed
-          onPressed: () {},
-          splashRadius: 22.0,
-          icon: const Icon(
-            Icons.search,
-            color: textColor,
-          ),
-        ),
         const SizedBox(width: defaultPadding / 2),
         Expanded(
-          // TODO: Remove this column and change it with real searchbar
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: defaultPadding / 2),
-              const Text('Search restaurant'),
-              Divider(color: textColor.withOpacity(0.8)),
-            ],
+          child: TextFormField(
+            controller: _controller,
+            onFieldSubmitted: widget.onSearch,
+            onSaved: widget.onSearch,
+            decoration: InputDecoration(
+              prefixIcon: const Icon(Icons.search),
+              border: const UnderlineInputBorder(),
+              labelText: 'Search by location, city, ...',
+              hintText: widget.hintText,
+            ),
           ),
         ),
         const SizedBox(width: defaultPadding / 2),
@@ -43,7 +51,10 @@ class SearchBar extends StatelessWidget {
             color: textColor,
           ),
           child: IconButton(
-            onPressed: onSearch,
+            onPressed: () {
+              if (widget.onSearch != null) widget.onSearch!(_controller.text);
+            },
+            tooltip: 'Search',
             splashRadius: 22.0,
             padding: const EdgeInsets.all(0.0),
             color: lightTextColor,

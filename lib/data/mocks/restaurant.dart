@@ -1,6 +1,6 @@
 import '../restaurant.dart';
 
-const List<Restaurant> restaurants = [
+const List<Restaurant> mockedRestaurants = [
   Restaurant(
     title: 'Lily & the magic potatoes',
     category: RestaurantCategory.fastFood,
