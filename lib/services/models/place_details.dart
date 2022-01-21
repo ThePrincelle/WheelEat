@@ -69,7 +69,7 @@ class PlaceDetails {
               .toList()
           : null,
       formattedAddress: json['formatted_address'] ?? '',
-      phone: json['formatted_phone_number'] ?? '',
+      phone: json['formatted_phone_number'],
       geometry:
           json['geometry'] != null ? Geometry.fromJson(json['geometry']) : null,
       icon: json['icon'] ?? '',
