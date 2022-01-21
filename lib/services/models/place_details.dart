@@ -4,6 +4,8 @@ import './types/geometry.dart';
 import './types/photo.dart';
 import './types/plus_code.dart';
 
+import '../../utils/parsing.dart';
+
 class PlaceDetails {
   // Object definition of a typical PlaceDetails response from Google Places API
   // https://developers.google.com/places/web-service/details#PlaceDetailsResults
@@ -80,7 +82,7 @@ class PlaceDetails {
       plusCode: json['plus_code'] != null
           ? PlusCode.fromJson(json['plus_code'])
           : null,
-      rating: json['rating'] ?? 0,
+      rating: parseDouble(json['rating']?.toString()),
       reference: json['reference'] ?? '',
       scope: json['scope'] ?? '',
       types: json['types'] != null
