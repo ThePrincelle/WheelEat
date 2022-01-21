@@ -21,7 +21,7 @@ Cette application a été conçue avec Flutter. Elle est disponible sous iOS, An
 
 - App Web : https://wheeleat.princelle.org
 - APK Android : https://s3.princelle.org/share/wheeleat.apk
-- iOS : consultez la section '[Comment construire l'application en local](#comment-construire-lapplication-en-local-)'
+- iOS : consultez la section '[Comment construire l'application en local ?](#comment-construire-lapplication-en-local-)'
 
 Le projet utilise les API's de Google : 
 - [Places API](https://developers.google.com/maps/documentation/places/web-service/overview?hl=fr)
