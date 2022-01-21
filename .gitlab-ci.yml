@@ -19,11 +19,11 @@ deploy:
     - 'which rsync || ( apt-get install -qq rsync )'
     - eval $(ssh-agent -s)
     - mkdir -p ~/.ssh
-    - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
-    - chmod 400 ~/.ssh/id_rsa
+    - echo "$SSH_PRIVATE_KEY" > ./ci_key
+    - chmod 400 ./ci_key
   script:
     - cp -r build/web public
-    - rsync -avuz -e 'ssh -i $HOME/.ssh/id_rsa -o StrictHostKeyChecking=no' public/ ${DEPLOY_PATH}/${CI_COMMIT_BRANCH}
+    - rsync -avuz -e 'ssh -i ./ci_key -o StrictHostKeyChecking=no' public/ ${DEPLOY_PATH}/${CI_COMMIT_BRANCH}
   artifacts:
     paths:
       - public
