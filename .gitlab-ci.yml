@@ -23,7 +23,7 @@ deploy:
     - chmod 400 ~/.ssh/id_rsa
   script:
     - cp -r build/web public
-    - rsync -avuz -e 'ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no' public/ ${DEPLOY_PATH}/${CI_COMMIT_BRANCH}
+    - rsync -avuz -e 'ssh -i $HOME/.ssh/id_rsa -o StrictHostKeyChecking=no' public/ ${DEPLOY_PATH}/${CI_COMMIT_BRANCH}
   artifacts:
     paths:
       - public
