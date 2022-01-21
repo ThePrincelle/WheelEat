@@ -30,7 +30,7 @@ class SettingsPage extends StatelessWidget {
                   onTap: () {
                     if (settings.values.toList()[index].type == typeSetting.bool) {
                       var setting = settings.values.toList()[index] as SettingBool;
-                      setting.saveValue(setting.status);
+                      setting.saveValue(!setting.status);
                     }
                     if (settings.values.toList()[index].type == typeSetting.openner) {
 
