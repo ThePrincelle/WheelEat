@@ -1,4 +1,4 @@
-build_test_web:
+build_web:
   stage: build
   image: cirrusci/flutter:stable
   before_script:
@@ -7,7 +7,6 @@ build_test_web:
   script:
     - flutter build web
     - flutter analyze
-    - flutter test
   artifacts:
     paths:
       - build/web
