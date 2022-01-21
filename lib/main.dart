@@ -9,7 +9,7 @@ import 'pages/_layout.dart';
 
 Future main() async {
   // Load the .env file
-  await dotenv.load(fileName: "envs");
+  await dotenv.load(fileName: ".env");
 
   // Start the app
   runApp(const MyApp());

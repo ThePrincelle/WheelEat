@@ -7,7 +7,7 @@ analyse:
   stage: analyse
   image: cirrusci/flutter:stable
   before_script:
-    - echo "GOOGLE_API_KEY=${GOOGLE_API_KEY}" > envs
+    - echo "GOOGLE_API_KEY=${GOOGLE_API_KEY}" > .env
     - flutter pub get
   script:
     - flutter analyze
@@ -20,7 +20,7 @@ android:build:
   needs: ["analyse"]
   image: cirrusci/flutter:stable
   before_script:
-    - echo "GOOGLE_API_KEY=${GOOGLE_API_KEY}" > envs
+    - echo "GOOGLE_API_KEY=${GOOGLE_API_KEY}" > .env
     - flutter pub get
     - flutter clean
   script:
@@ -28,7 +28,7 @@ android:build:
     - flutter build apk --release
   artifacts:
     paths:
-      - "**/**/**/**/**/**/*.apk"
+      - "build/app/outputs/flutter-apk/app-release.apk"
   only:
     - main
     - develop
@@ -38,7 +38,7 @@ web:build:
   needs: ["analyse"]
   image: cirrusci/flutter:stable
   before_script:
-    - echo "GOOGLE_API_KEY=${GOOGLE_API_KEY}" > envs
+    - echo "GOOGLE_API_KEY=${GOOGLE_API_KEY}" > .env
     - flutter pub get
   script:
     - flutter build web
