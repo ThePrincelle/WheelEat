@@ -9,9 +9,9 @@ import '../data/restaurant.dart';
 
 import './models/restaurants_response.dart';
 
-final googleApiKey = dotenv.env['GOOGLE_API_KEY'] ?? '';
-const googleApiBaseUrl =
-    "cors-anywhere.princelle.org/https://maps.googleapis.com";
+final googleApiKey = dotenv.env['GOOGLE_API_KEY'] ??
+    const String.fromEnvironment('GOOGLE_API_KEY', defaultValue: '');
+const googleApiBaseUrl = "maps.googleapis.com";
 
 class Places {
   // A function that returns a list of places with a given keyword.

@@ -1,6 +1,7 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-final googleApiKey = dotenv.env['GOOGLE_API_KEY'] ?? '';
+final googleApiKey = dotenv.env['GOOGLE_API_KEY'] ??
+    const String.fromEnvironment('GOOGLE_API_KEY', defaultValue: '');
 
 class Photo {
   final int height;

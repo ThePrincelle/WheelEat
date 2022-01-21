@@ -25,7 +25,7 @@ android:build:
     - flutter clean
   script:
     - flutter doctor --android-licenses
-    - flutter build apk --release
+    - flutter build apk --release --dart-define=GOOGLE_API_KEY="${GOOGLE_API_KEY}"
   artifacts:
     paths:
       - "build/app/outputs/flutter-apk/app-release.apk"
@@ -41,7 +41,7 @@ web:build:
     - echo "GOOGLE_API_KEY=${GOOGLE_API_KEY}" > .env
     - flutter pub get
   script:
-    - flutter build web
+    - flutter build web --dart-define=GOOGLE_API_KEY="${GOOGLE_API_KEY}"
   artifacts:
     paths:
       - build/web

@@ -7,7 +7,8 @@ import './types/photo.dart';
 import './types/plus_code.dart';
 import './types/geometry.dart';
 
-final googleApiKey = dotenv.env['GOOGLE_API_KEY'] ?? '';
+final googleApiKey = dotenv.env['GOOGLE_API_KEY'] ??
+    const String.fromEnvironment('GOOGLE_API_KEY', defaultValue: '');
 
 const List<String> defaultType = ["restaurant"];
 const double doubleZero = 0.0;
