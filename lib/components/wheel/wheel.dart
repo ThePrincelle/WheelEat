@@ -6,6 +6,8 @@ import '../../data/wheel_item.dart';
 import 'wheel_icon.dart';
 import 'arrow.dart';
 
+const imageNetworkHeaders = {"X-Requested-With": "XMLHttpRequest"};
+
 class Wheel extends StatefulWidget {
   final double angle;
   final double current;
@@ -90,21 +92,42 @@ class _WheelState extends State<Wheel> {
 
   _buildIcon(WheelItem item) {
     var _rotate = _rotote(widget.items.indexOf(item));
-    return Transform.rotate(
-      angle: _rotate,
-      child: Container(
-        height: size.height,
-        width: size.width,
-        alignment: Alignment.topCenter,
-        child: ConstrainedBox(
-          constraints:
-              BoxConstraints.expand(height: size.height / 3, width: 44.0),
-          child: Center(
-            child: WheelIcon(item),
-          ),
-        ),
-      ),
-    );
+    return (item.restaurant != null && item.restaurant!.image != null)
+        ? Transform.rotate(
+            angle: _rotate,
+            child: Container(
+              height: size.height,
+              width: size.width,
+              alignment: Alignment.topCenter,
+              child: ConstrainedBox(
+                constraints:
+                    BoxConstraints.expand(height: size.height / 3, width: 44.0),
+                child: Center(
+                  child: CircleAvatar(
+                    backgroundImage: NetworkImage(
+                      item.restaurant!.image!,
+                      headers: imageNetworkHeaders,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          )
+        : Transform.rotate(
+            angle: _rotate,
+            child: Container(
+              height: size.height,
+              width: size.width,
+              alignment: Alignment.topCenter,
+              child: ConstrainedBox(
+                constraints:
+                    BoxConstraints.expand(height: size.height / 3, width: 44.0),
+                child: Center(
+                  child: WheelIcon(item),
+                ),
+              ),
+            ),
+          );
   }
 }
 

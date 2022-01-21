@@ -1,6 +1,8 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 final googleApiKey = dotenv.env['GOOGLE_API_KEY'] ?? '';
+const googleApiBaseUrl = "cors-anywhere.princelle.org";
+const prefixUrl = "https://maps.googleapis.com";
 
 class Photo {
   final int height;
@@ -29,10 +31,8 @@ class Photo {
         htmlAttributions: json['html_attributions'],
         photoReference: json['photo_reference'],
         width: json['width'],
-
-        // https://maps.googleapis.com/maps/api/place/photo?maxwidth=1000&photo_reference=photo_reference&key=YOUR_API_KEY
         uri: json['photo_reference'] != null
-            ? Uri.https("maps.googleapis.com", "maps/api/place/photo", {
+            ? Uri.https(googleApiBaseUrl, prefixUrl + "/maps/api/place/photo", {
                 "photo_reference": json['photo_reference'],
                 "maxwidth": "1000",
                 "key": googleApiKey

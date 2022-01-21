@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 
+import 'restaurant.dart';
+
 class WheelItem {
-  final IconData icon;
+  final IconData? icon;
+  final Restaurant? restaurant;
   final Color color;
 
-  const WheelItem({required this.icon, required this.color});
+  const WheelItem({this.icon, this.restaurant, required this.color});
 }
