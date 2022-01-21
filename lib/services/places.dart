@@ -9,9 +9,9 @@ import '../data/restaurant.dart';
 
 import './models/restaurants_response.dart';
 
-final googleApiKey = dotenv.env['GOOGLE_API_KEY'] ??
-    const String.fromEnvironment('GOOGLE_API_KEY', defaultValue: '');
+final googleApiKey = dotenv.env['GOOGLE_API_KEY'] ?? '';
 const googleApiBaseUrl = "maps.googleapis.com";
+const prefixUrl = "";
 
 class Places {
   // A function that returns a list of places with a given keyword.
@@ -19,8 +19,8 @@ class Places {
       String latitude, String longitude,
       [String? address]) async {
     // Fetch Google Places API data by coordinates with given type and language
-    final Uri uri =
-        Uri.https(googleApiBaseUrl, "/maps/api/place/nearbysearch/json", {
+    final Uri uri = Uri.https(
+        googleApiBaseUrl, prefixUrl + "/maps/api/place/nearbysearch/json", {
       "location": "$latitude,$longitude",
       "type": "restaurant",
       "language": "fr",
@@ -30,7 +30,10 @@ class Places {
 
     final response = await http.get(uri, headers: {
       "Accept": "application/json",
-      "Access-Control_Allow_Origin": "*"
+      "Access-Control_Allow_Origin": "*",
+      "Access-Control-Allow-Methods": "GET, POST, PATCH, PUT, DELETE, OPTIONS",
+      "Access-Control-Allow-Headers":
+          "Origin, Content-Type, X-Auth-Token, Accept"
     });
 
     // Decode the JSON response
@@ -60,12 +63,18 @@ class Places {
     // If address is defined, continue, else return empty list
     if (address != "") {
       // Get address coordinates with Google API
-      final Uri uri = Uri.https(googleApiBaseUrl, "/maps/api/geocode/json",
+      final Uri uri = Uri.https(
+          googleApiBaseUrl,
+          prefixUrl + "/maps/api/geocode/json",
           {"address": address, "language": "fr", "key": googleApiKey});
 
       final response = await http.get(uri, headers: {
         "Accept": "application/json",
-        "Access-Control_Allow_Origin": "*"
+        "Access-Control_Allow_Origin": "*",
+        "Access-Control-Allow-Methods":
+            "GET, POST, PATCH, PUT, DELETE, OPTIONS",
+        "Access-Control-Allow-Headers":
+            "Origin, Content-Type, X-Auth-Token, Accept"
       });
       var results = json.decode(response.body)["results"];
       if (results.length > 0) {
@@ -95,12 +104,17 @@ class Places {
 Future<PlaceDetails?> getPlaceDetails(Restaurant restaurant) async {
   if (restaurant.placeId != "") {
     // Fetch Google Places API data by placeId
-    final Uri uri = Uri.https(googleApiBaseUrl, "/maps/api/place/details/json",
+    final Uri uri = Uri.https(
+        googleApiBaseUrl,
+        prefixUrl + "/maps/api/place/details/json",
         {"placeid": restaurant.placeId, "language": "fr", "key": googleApiKey});
 
     final response = await http.get(uri, headers: {
       "Accept": "application/json",
-      "Access-Control_Allow_Origin": "*"
+      "Access-Control_Allow_Origin": "*",
+      "Access-Control-Allow-Methods": "GET, POST, PATCH, PUT, DELETE, OPTIONS",
+      "Access-Control-Allow-Headers":
+          "Origin, Content-Type, X-Auth-Token, Accept"
     });
 
     // Decode the JSON response
@@ -119,7 +133,8 @@ Future<PlaceDetails?> getPlaceDetails(Restaurant restaurant) async {
 Future<String> getAddressFromCoordinates(
     String latitude, String longitude) async {
   // Fetch Google Places API data by coordinates with given type and language
-  final Uri uri = Uri.https(googleApiBaseUrl, "/maps/api/geocode/json", {
+  final Uri uri = Uri.https(
+      googleApiBaseUrl, prefixUrl + "/maps/api/geocode/json", {
     "latlng": "$latitude,$longitude",
     "language": "fr",
     "key": googleApiKey
@@ -127,7 +142,9 @@ Future<String> getAddressFromCoordinates(
 
   final response = await http.get(uri, headers: {
     "Accept": "application/json",
-    "Access-Control_Allow_Origin": "*"
+    "Access-Control_Allow_Origin": "*",
+    "Access-Control-Allow-Methods": "GET, POST, PATCH, PUT, DELETE, OPTIONS",
+    "Access-Control-Allow-Headers": "Origin, Content-Type, X-Auth-Token, Accept"
   });
 
   // Decode the JSON response
