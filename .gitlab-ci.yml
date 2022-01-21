@@ -14,16 +14,15 @@ build_web:
 deploy:
   stage: deploy
   before_script:
-    - apt-get update
-    - 'which ssh-agent || ( apt-get install -qq openssh-client )'
-    - 'which rsync || ( apt-get install -qq rsync )'
+    - 'command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )'
+    - 'which rsync || apt-get install rsync -y'
     - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
     - mkdir -p ~/.ssh
-    - echo "$SSH_PRIVATE_KEY" > ./ci_key
-    - chmod 400 ./ci_key
+    - chmod 700 ~/.ssh
   script:
     - cp -r build/web public
-    - rsync -avuz -e 'ssh -i ./ci_key -o StrictHostKeyChecking=no' public/ ${DEPLOY_PATH}/${CI_COMMIT_BRANCH}
+    - rsync -avuz -e 'ssh -o StrictHostKeyChecking=no' public/ ${DEPLOY_PATH}/${CI_COMMIT_BRANCH}
   artifacts:
     paths:
       - public
