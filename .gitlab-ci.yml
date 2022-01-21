@@ -1,0 +1,24 @@
+build_test_web:
+  stage: build
+  image: cirrusci/flutter:stable
+  before_script:
+    - echo "GOOGLE_API_KEY=$GOOGLE_API_KEY" > .env
+    - flutter pub get
+  script:
+    - flutter build web
+    - flutter analyze
+    - flutter test
+  artifacts:
+    paths:
+      - build/web
+ 
+pages:
+  stage: deploy
+  script:
+    - cp -r build/web public
+  artifacts:
+    paths:
+      - public
+  only:
+    - main
+    - develop
