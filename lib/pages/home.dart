@@ -23,7 +23,26 @@ class _HomePageState extends State<HomePage> {
   double longitude = 7.738757;
   double latitude = 48.526559;
   bool positionAvailable = false;
+  String address = 'Pôle API, Illkirch, France';
   String restaurantEmptyMsg = 'Fetching restaurants...';
+
+  Future<void> fetchRestaurantsByAddress(String? addr) async {
+    if (addr == null) return;
+
+    try {
+      var restaurantResponse = await Places.getPlacesFromAddress(addr);
+      setState(() {
+        address = restaurantResponse.address ?? 'Pôle API, Illkirch, France';
+        restaurants = restaurantResponse.restaurants ?? [];
+      });
+    } catch (_) {
+      setState(() {
+        restaurantEmptyMsg =
+            'Error fetching restaurants.\nRestaurant API is not available.';
+        restaurants = [];
+      });
+    }
+  }
 
   Future<void> fetchNearbyRestaurants() async {
     try {
@@ -45,6 +64,7 @@ class _HomePageState extends State<HomePage> {
       var restaurantResponse = await Places.getPlacesFromCoordinates(
           latitude.toString(), longitude.toString());
       setState(() {
+        address = restaurantResponse.address ?? 'Pôle API, Illkirch, France';
         restaurants = restaurantResponse.restaurants ?? [];
       });
     } catch (_) {
@@ -76,7 +96,12 @@ class _HomePageState extends State<HomePage> {
             const SizedBox(height: defaultPadding * 4),
             const PageTitle('HUNGRY?!'),
             const SizedBox(height: defaultPadding * 2),
-            SearchBar(onSearch: () {}), // TODO: Update this onPressed
+            SearchBar(
+              hintText: address,
+              onSearch: (addr) {
+                fetchRestaurantsByAddress(addr);
+              },
+            ),
             const SizedBox(height: defaultPadding),
             if (!positionAvailable)
               const Text(

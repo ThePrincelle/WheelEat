@@ -218,17 +218,6 @@ class RestaurantDetailsPage extends StatelessWidget {
                 ),
               ),
             ),
-            CircleAvatar(
-              backgroundColor: Colors.black.withOpacity(0.7),
-              child: IconButton(
-                onPressed: () {}, // TODO: Update onPressed
-                color: lightTextColor,
-                icon: const Icon(
-                  Icons.more_vert_rounded,
-                  size: defaultPadding * 1.25,
-                ),
-              ),
-            ),
           ],
         ),
       ),
