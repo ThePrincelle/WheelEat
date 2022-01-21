@@ -1,4 +1,87 @@
-build_web:
+variables:
+  IOS_XCODE_PROJECT_NAME: "Runner"
+  FLAVOR: "production"
+
+stages:
+  - build
+  - deploy
+  - archive
+
+android:debug:
+  stage: archive
+  before_script:
+    - flutter packages get
+    - flutter clean
+  script:
+    - flutter doctor --android-licenses
+    - flutter build apk --flavor ${FLAVOR} --debug
+  artifacts:
+    paths:
+      - "**/**/**/**/**/**/*.apk"
+    expire_in: 1 day
+  only:
+    - main
+    - develop
+
+android:release:
+  stage: archive
+  before_script:
+    - flutter packages get
+    - flutter clean
+  script:
+    - flutter doctor --android-licenses
+    - flutter build apk --flavor ${FLAVOR} --release
+  artifacts:
+    paths:
+      - "**/**/**/**/**/**/*.apk"
+  only:
+    - main
+    - develop
+
+ios:debug:
+  stage: archive
+  before_script:
+    - flutter packages get
+    - flutter clean
+  script:
+    - flutter build ios --flavor ${FLAVOR}
+    - if [ -d archive ]; then rm -rf archive; fi && mkdir archive
+    - if [ -d artifact ]; then rm -rf artifact; fi && mkdir artifact
+    - export PLIST_DIRECTORY="ci-cd/iOS/${FLAVOR}/debug"
+    - cd ios
+    - pod install;
+    - xcodebuild clean archive -quiet -workspace ${IOS_XCODE_PROJECT_NAME}.xcworkspace -scheme ${FLAVOR} -archivePath "../archive/${IOS_XCODE_PROJECT_NAME}.xcarchive";
+    - xcodebuild -quiet -exportArchive -archivePath  "../archive/${IOS_XCODE_PROJECT_NAME}.xcarchive" -exportPath ../artifact/ -exportOptionsPlist ${PLIST_DIRECTORY}/*.plist
+  artifacts:
+    paths:
+      - "artifact/*.ipa"
+    expire_in: 1 day
+  only:
+    - main
+    - develop
+
+ios:release:
+  stage: archive
+  before_script:
+    - flutter packages get
+    - flutter clean
+  script:
+    - flutter build ios --flavor ${FLAVOR}
+    - if [ -d archive ]; then rm -rf archive; fi && mkdir archive
+    - if [ -d artifact ]; then rm -rf artifact; fi && mkdir artifact
+    - export PLIST_DIRECTORY="ci-cd/iOS/${FLAVOR}/release"
+    - cd ios
+    - pod install;
+    - xcodebuild clean archive -quiet -workspace ${IOS_XCODE_PROJECT_NAME}.xcworkspace -scheme ${FLAVOR} -archivePath "../archive/${IOS_XCODE_PROJECT_NAME}.xcarchive";
+    - xcodebuild -quiet -exportArchive -archivePath  "../archive/${IOS_XCODE_PROJECT_NAME}.xcarchive" -exportPath ../artifact/ -exportOptionsPlist ${PLIST_DIRECTORY}/*.plist
+  artifacts:
+    paths:
+      - "artifact/*.ipa"
+  only:
+    - main
+    - develop
+
+web:build:
   stage: build
   image: cirrusci/flutter:stable
   before_script:
@@ -10,8 +93,11 @@ build_web:
   artifacts:
     paths:
       - build/web
+  only:
+    - main
+    - develop
  
-deploy:
+web:deploy:
   stage: deploy
   before_script:
     - 'command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )'
