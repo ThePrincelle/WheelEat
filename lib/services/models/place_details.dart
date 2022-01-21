@@ -12,6 +12,7 @@ class PlaceDetails {
 
   final List<AddressComponent>? addressComponents;
   final String? formattedAddress;
+  final String? phone;
   final Geometry? geometry;
   final String? icon;
   final String? id;
@@ -33,6 +34,7 @@ class PlaceDetails {
   const PlaceDetails({
     this.addressComponents,
     this.formattedAddress,
+    this.phone,
     this.geometry,
     this.icon,
     this.id,
@@ -55,7 +57,7 @@ class PlaceDetails {
   // ToString debug method
   @override
   String toString() {
-    return 'PlaceDetails{addressComponents: $addressComponents, formattedAddress: $formattedAddress, geometry: $geometry, icon: $icon, id: $id, name: $name, openingHours: $openingHours, photos: $photos, placeId: $placeId, plusCode: $plusCode, rating: $rating, reference: $reference, scope: $scope, types: $types, url: $url, userRatingsTotal: $userRatingsTotal, utcOffset: $utcOffset, vicinity: $vicinity, website: $website}';
+    return 'PlaceDetails{addressComponents: $addressComponents, formattedAddress: $formattedAddress, address: $phone, geometry: $geometry, icon: $icon, id: $id, name: $name, openingHours: $openingHours, photos: $photos, placeId: $placeId, plusCode: $plusCode, rating: $rating, reference: $reference, scope: $scope, types: $types, url: $url, userRatingsTotal: $userRatingsTotal, utcOffset: $utcOffset, vicinity: $vicinity, website: $website}';
   }
 
   // FromJson parser
@@ -67,6 +69,7 @@ class PlaceDetails {
               .toList()
           : null,
       formattedAddress: json['formatted_address'] ?? '',
+      phone: json['formatted_phone_number'] ?? '',
       geometry:
           json['geometry'] != null ? Geometry.fromJson(json['geometry']) : null,
       icon: json['icon'] ?? '',
