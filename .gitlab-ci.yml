@@ -2,7 +2,6 @@ stages:
   - analyse
   - build
   - deploy
-  - archive
 
 analyse:
   stage: analyse
@@ -16,10 +15,11 @@ analyse:
     - main
     - develop
 
-android:release:
-  stage: archive
+android:build:
+  stage: build
   image: cirrusci/flutter:stable
   before_script:
+    - echo "GOOGLE_API_KEY=$GOOGLE_API_KEY" > .env
     - flutter pub get
     - flutter clean
   script:
@@ -50,6 +50,7 @@ web:build:
 
 web:deploy:
   stage: deploy
+  needs: ["web:build"]
   before_script:
     - 'command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )'
     - 'which rsync || apt-get install rsync -y'
