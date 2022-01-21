@@ -10,8 +10,8 @@ import '../data/restaurant.dart';
 import './models/restaurants_response.dart';
 
 final googleApiKey = dotenv.env['GOOGLE_API_KEY'] ?? '';
-const googleApiBaseUrl = "maps.googleapis.com";
-const prefixUrl = "";
+const googleApiBaseUrl = "cors-anywhere.princelle.org";
+const prefixUrl = "https://maps.googleapis.com";
 
 class Places {
   // A function that returns a list of places with a given keyword.
@@ -33,7 +33,8 @@ class Places {
       "Access-Control_Allow_Origin": "*",
       "Access-Control-Allow-Methods": "GET, POST, PATCH, PUT, DELETE, OPTIONS",
       "Access-Control-Allow-Headers":
-          "Origin, Content-Type, X-Auth-Token, Accept"
+          "Origin, Content-Type, X-Auth-Token, Accept",
+      "X-Requested-With": "XMLHttpRequest"
     });
 
     // Decode the JSON response
@@ -74,7 +75,8 @@ class Places {
         "Access-Control-Allow-Methods":
             "GET, POST, PATCH, PUT, DELETE, OPTIONS",
         "Access-Control-Allow-Headers":
-            "Origin, Content-Type, X-Auth-Token, Accept"
+            "Origin, Content-Type, X-Auth-Token, Accept",
+        "X-Requested-With": "XMLHttpRequest"
       });
       var results = json.decode(response.body)["results"];
       if (results.length > 0) {
@@ -114,7 +116,8 @@ Future<PlaceDetails?> getPlaceDetails(Restaurant restaurant) async {
       "Access-Control_Allow_Origin": "*",
       "Access-Control-Allow-Methods": "GET, POST, PATCH, PUT, DELETE, OPTIONS",
       "Access-Control-Allow-Headers":
-          "Origin, Content-Type, X-Auth-Token, Accept"
+          "Origin, Content-Type, X-Auth-Token, Accept",
+      "X-Requested-With": "XMLHttpRequest"
     });
 
     // Decode the JSON response
@@ -144,7 +147,9 @@ Future<String> getAddressFromCoordinates(
     "Accept": "application/json",
     "Access-Control_Allow_Origin": "*",
     "Access-Control-Allow-Methods": "GET, POST, PATCH, PUT, DELETE, OPTIONS",
-    "Access-Control-Allow-Headers": "Origin, Content-Type, X-Auth-Token, Accept"
+    "Access-Control-Allow-Headers":
+        "Origin, Content-Type, X-Auth-Token, Accept",
+    "X-Requested-With": "XMLHttpRequest"
   });
 
   // Decode the JSON response

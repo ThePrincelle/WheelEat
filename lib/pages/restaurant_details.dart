@@ -9,6 +9,8 @@ import '../components/price_tags.dart';
 import '../components/rating_stars.dart';
 import '../components/schedule_table.dart';
 
+const imageNetworkHeaders = {"X-Requested-With": "XMLHttpRequest"};
+
 class RestaurantDetailsPage extends StatelessWidget {
   final Restaurant restaurant;
   final OpeningHours? openingHours;
@@ -197,6 +199,7 @@ class RestaurantDetailsPage extends StatelessWidget {
             width: double.infinity,
             fit: BoxFit.cover,
             semanticLabel: "Restaurant photo",
+            headers: imageNetworkHeaders,
           )
         : Container(
             width: double.infinity,
