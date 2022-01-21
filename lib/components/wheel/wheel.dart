@@ -6,6 +6,8 @@ import '../../data/wheel_item.dart';
 import 'wheel_icon.dart';
 import 'arrow.dart';
 
+const imageNetworkHeaders = {"X-Requested-With": "XMLHttpRequest"};
+
 class Wheel extends StatefulWidget {
   final double angle;
   final double current;
@@ -102,7 +104,10 @@ class _WheelState extends State<Wheel> {
                     BoxConstraints.expand(height: size.height / 3, width: 44.0),
                 child: Center(
                   child: CircleAvatar(
-                    backgroundImage: NetworkImage(item.restaurant!.image!),
+                    backgroundImage: NetworkImage(
+                      item.restaurant!.image!,
+                      headers: imageNetworkHeaders,
+                    ),
                   ),
                 ),
               ),

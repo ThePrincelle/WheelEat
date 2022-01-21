@@ -12,6 +12,8 @@ import '../components/page_title.dart';
 import '../components/wheel/wheel.dart';
 import '../components/wheel/wheel_icon.dart';
 
+const imageNetworkHeaders = {"X-Requested-With": "XMLHttpRequest"};
+
 class WheelPage extends StatefulWidget {
   const WheelPage({Key? key}) : super(key: key);
 
@@ -227,7 +229,10 @@ class _WheelPageState extends State<WheelPage>
                 child: Column(
                   children: [
                     CircleAvatar(
-                      backgroundImage: NetworkImage(item.restaurant!.image!),
+                      backgroundImage: NetworkImage(
+                        item.restaurant!.image!,
+                        headers: imageNetworkHeaders,
+                      ),
                       radius: 40,
                     ),
                     const SizedBox(height: defaultPadding),
