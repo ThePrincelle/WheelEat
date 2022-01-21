@@ -30,6 +30,11 @@ class SettingsPage extends StatelessWidget {
                     const SizedBox(height: defaultPadding / 2),
               ),
             ),
+            const Text(
+              "Les fonctionnalités de cette page seront développées ultérieurement.",
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: defaultPadding * 2),
           ],
         ),
       ),
