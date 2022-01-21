@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 double? parseDouble(String? value) {
   if (value == null) {
     return null;

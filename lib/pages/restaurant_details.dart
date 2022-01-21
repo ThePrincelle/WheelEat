@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../constants.dart';
 import '../data/restaurant.dart';
+import '../services/models/types/opening_hours.dart';
 
 import '../components/opened_closed_badge.dart';
 import '../components/price_tags.dart';
@@ -10,10 +11,12 @@ import '../components/schedule_table.dart';
 
 class RestaurantDetailsPage extends StatelessWidget {
   final Restaurant restaurant;
+  final OpeningHours? openingHours;
 
   const RestaurantDetailsPage({
     Key? key,
     this.restaurant = const Restaurant(title: 'Placeholder'),
+    this.openingHours,
   }) : super(key: key);
 
   @override
@@ -149,8 +152,8 @@ class RestaurantDetailsPage extends StatelessWidget {
                                       ),
                                     ),
                                     const SizedBox(height: defaultPadding / 2),
-                                    if (restaurant.schedule != null)
-                                      ScheduleTable(restaurant.schedule!)
+                                    if (openingHours != null)
+                                      ScheduleTable(openingHours!)
                                     else
                                       const Text(
                                         "No data available",

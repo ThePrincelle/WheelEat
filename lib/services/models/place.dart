@@ -86,8 +86,8 @@ class Place {
       plusCode: json['plus_code'] != null
           ? PlusCode.fromJson(json['plus_code'])
           : null,
-      priceLevel: parseInt(json['price_level']?.toString()) ?? 0,
-      rating: parseDouble(json['rating']?.toString()) ?? doubleZero,
+      priceLevel: parseInt(json['price_level']?.toString()),
+      rating: parseDouble(json['rating']?.toString()),
       reference: json['reference'],
       scope: json['scope'],
       phone: json['formatted_phone_number'],

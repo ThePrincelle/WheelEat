@@ -15,13 +15,13 @@ class PlaceDetails {
   final String? id;
   final String? name;
   final OpeningHours? openingHours;
-  final Photo? photos;
+  final List<Photo>? photos;
   final String? placeId;
   final PlusCode? plusCode;
-  final int? rating;
+  final double? rating;
   final String? reference;
   final String? scope;
-  final String? types;
+  final List<String>? types;
   final String? url;
   final int? userRatingsTotal;
   final int? utcOffset;
@@ -73,7 +73,9 @@ class PlaceDetails {
       openingHours: json['opening_hours'] != null
           ? OpeningHours.fromJson(json['opening_hours'])
           : null,
-      photos: json['photos'] != null ? Photo.fromJson(json['photos']) : null,
+      photos: json['photos'] != null
+          ? (json['photos'] as List).map((i) => Photo.fromJson(i)).toList()
+          : null,
       placeId: json['place_id'] ?? '',
       plusCode: json['plus_code'] != null
           ? PlusCode.fromJson(json['plus_code'])
@@ -81,7 +83,9 @@ class PlaceDetails {
       rating: json['rating'] ?? 0,
       reference: json['reference'] ?? '',
       scope: json['scope'] ?? '',
-      types: json['types'] ?? '',
+      types: json['types'] != null
+          ? (json['types'] as List).map((type) => type as String).toList()
+          : null,
       url: json['url'] ?? '',
       userRatingsTotal: json['user_ratings_total'] ?? 0,
       utcOffset: json['utc_offset'] ?? 0,

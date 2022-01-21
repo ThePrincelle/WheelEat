@@ -50,6 +50,9 @@ class Restaurant {
       iconBackgroundColor: place.iconBackgroundColor,
       image: place.photos?[0].uri.toString(),
       type: place.types[0],
+      category: place.types.contains('meal_takeaway')
+          ? RestaurantCategory.fastFood
+          : RestaurantCategory.restaurant,
       placeId: place.placeId,
       // schedule: place.schedule,
     );

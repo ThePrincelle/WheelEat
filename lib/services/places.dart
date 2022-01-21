@@ -13,7 +13,7 @@ final googleApiKey = dotenv.env['GOOGLE_API_KEY'] ?? '';
 
 class Places {
   // A function that returns a list of places with a given keyword.
-  Future<RestaurantsResponse> getPlacesFromCoordinates(
+  static Future<RestaurantsResponse> getPlacesFromCoordinates(
       String latitude, String longitude,
       [String? address]) async {
     // Fetch Google Places API data by coordinates with given type and language
@@ -53,7 +53,8 @@ class Places {
   }
 
   // A function that returns a list of places with a given address.
-  Future<RestaurantsResponse> getPlacesFromAddress(String address) async {
+  static Future<RestaurantsResponse> getPlacesFromAddress(
+      String address) async {
     // If address is defined, continue, else return empty list
     if (address != "") {
       // Get address coordinates with Google API
@@ -107,9 +108,6 @@ Future<PlaceDetails?> getPlaceDetails(Restaurant restaurant) async {
 
     // Get place details from result
     var placeDetails = PlaceDetails.fromJson(result);
-
-    // Print place details
-    print(placeDetails.toString());
 
     return placeDetails;
   } else {

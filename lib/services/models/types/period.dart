@@ -18,8 +18,8 @@ class Period {
   // FromJson parser
   factory Period.fromJson(Map<String, dynamic> json) {
     return Period(
-      close: json['close'] ?? '',
-      open: json['open'] ?? '',
+      close: json['close']?.toString() ?? '',
+      open: json['open']?.toString() ?? '',
     );
   }
 }

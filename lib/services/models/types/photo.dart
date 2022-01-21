@@ -26,9 +26,7 @@ class Photo {
   factory Photo.fromJson(Map<String, dynamic> json) {
     return Photo(
         height: json['height'],
-        htmlAttributions: json['html_attributions'] != null
-            ? json['html_attributions']
-            : null,
+        htmlAttributions: json['html_attributions'],
         photoReference: json['photo_reference'],
         width: json['width'],
 
