@@ -17,6 +17,7 @@ analyse:
 
 android:build:
   stage: build
+  needs: ["analyse"]
   image: cirrusci/flutter:stable
   before_script:
     - echo "GOOGLE_API_KEY=$GOOGLE_API_KEY" > .env
@@ -34,6 +35,7 @@ android:build:
 
 web:build:
   stage: build
+  needs: ["analyse"]
   image: cirrusci/flutter:stable
   before_script:
     - echo "GOOGLE_API_KEY=$GOOGLE_API_KEY" > .env
