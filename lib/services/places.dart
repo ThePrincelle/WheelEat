@@ -10,6 +10,8 @@ import '../data/restaurant.dart';
 import './models/restaurants_response.dart';
 
 final googleApiKey = dotenv.env['GOOGLE_API_KEY'] ?? '';
+const googleApiBaseUrl =
+    "cors-anywhere.princelle.org/https://maps.googleapis.com";
 
 class Places {
   // A function that returns a list of places with a given keyword.
@@ -18,7 +20,7 @@ class Places {
       [String? address]) async {
     // Fetch Google Places API data by coordinates with given type and language
     final Uri uri =
-        Uri.https("maps.googleapis.com", "/maps/api/place/nearbysearch/json", {
+        Uri.https(googleApiBaseUrl, "/maps/api/place/nearbysearch/json", {
       "location": "$latitude,$longitude",
       "type": "restaurant",
       "language": "fr",
@@ -58,7 +60,7 @@ class Places {
     // If address is defined, continue, else return empty list
     if (address != "") {
       // Get address coordinates with Google API
-      final Uri uri = Uri.https("maps.googleapis.com", "/maps/api/geocode/json",
+      final Uri uri = Uri.https(googleApiBaseUrl, "/maps/api/geocode/json",
           {"address": address, "language": "fr", "key": googleApiKey});
 
       final response = await http.get(uri, headers: {
@@ -93,9 +95,7 @@ class Places {
 Future<PlaceDetails?> getPlaceDetails(Restaurant restaurant) async {
   if (restaurant.placeId != "") {
     // Fetch Google Places API data by placeId
-    final Uri uri = Uri.https(
-        "maps.googleapis.com",
-        "/maps/api/place/details/json",
+    final Uri uri = Uri.https(googleApiBaseUrl, "/maps/api/place/details/json",
         {"placeid": restaurant.placeId, "language": "fr", "key": googleApiKey});
 
     final response = await http.get(uri, headers: {
@@ -119,7 +119,7 @@ Future<PlaceDetails?> getPlaceDetails(Restaurant restaurant) async {
 Future<String> getAddressFromCoordinates(
     String latitude, String longitude) async {
   // Fetch Google Places API data by coordinates with given type and language
-  final Uri uri = Uri.https("maps.googleapis.com", "/maps/api/geocode/json", {
+  final Uri uri = Uri.https(googleApiBaseUrl, "/maps/api/geocode/json", {
     "latlng": "$latitude,$longitude",
     "language": "fr",
     "key": googleApiKey
