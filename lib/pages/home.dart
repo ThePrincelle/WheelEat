@@ -122,6 +122,7 @@ class _HomePageState extends State<HomePage> {
                           builder: (context) => RestaurantDetailsPage(
                             restaurant: restaurants[index],
                             openingHours: details?.openingHours,
+                            phone: details?.phone,
                           ),
                         ),
                       );

@@ -12,11 +12,13 @@ import '../components/schedule_table.dart';
 class RestaurantDetailsPage extends StatelessWidget {
   final Restaurant restaurant;
   final OpeningHours? openingHours;
+  final String? phone;
 
   const RestaurantDetailsPage({
     Key? key,
     this.restaurant = const Restaurant(title: 'Placeholder'),
     this.openingHours,
+    this.phone,
   }) : super(key: key);
 
   @override
@@ -66,6 +68,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                             width: double.infinity,
                             child: Text(
                               restaurant.title.toUpperCase(),
+                              softWrap: true,
                               textAlign: TextAlign.center,
                               style: const TextStyle(
                                 fontWeight: FontWeight.w900,
@@ -104,6 +107,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                               const SizedBox(width: defaultPadding / 4),
                               Text(
                                 restaurant.address ?? "No data available.",
+                                softWrap: true,
                                 style: const TextStyle(
                                   color: textColor,
                                   fontWeight: FontWeight.w900,
@@ -121,7 +125,10 @@ class RestaurantDetailsPage extends StatelessWidget {
                               ),
                               const SizedBox(width: defaultPadding / 4),
                               Text(
-                                restaurant.phone ?? "No data available.",
+                                restaurant.phone ??
+                                    phone ??
+                                    "No data available.",
+                                softWrap: true,
                                 style: const TextStyle(
                                   color: textColor,
                                   fontWeight: FontWeight.w900,
