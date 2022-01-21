@@ -37,7 +37,6 @@ class _WheelPageState extends State<WheelPage>
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     var _duration = const Duration(milliseconds: 5000);
     _ctrl = AnimationController(vsync: this, duration: _duration);
