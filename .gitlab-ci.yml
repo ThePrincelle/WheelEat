@@ -1,4 +1,4 @@
-build_web:
+build_test_web:
   stage: build
   image: cirrusci/flutter:stable
   before_script:
@@ -7,14 +7,22 @@ build_web:
   script:
     - flutter build web
     - flutter analyze
+    - flutter test
   artifacts:
     paths:
       - build/web
  
-pages:
-  stage: deploy
+deploy:
+  stage: deploy_main
+  before_script:
+    - 'which ssh-agent || ( apt-get install -qq openssh-client )'
+    - 'which rsync || ( apt-get install -qq rsync )'
+    - eval $(ssh-agent -s)
+    - ssh-add <(echo "$SSH_PRIVATE_KEY")
+    - mkdir -p ~/.ssh
   script:
     - cp -r build/web public
+    - rsync -avuz -e 'ssh -o StrictHostKeyChecking=no' public/ ${DEPLOY_PATH}/${CI_COMMIT_BRANCH}
   artifacts:
     paths:
       - public
