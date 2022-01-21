@@ -1,21 +1,30 @@
-variables:
-  IOS_XCODE_PROJECT_NAME: "Runner"
-  FLAVOR: "production"
-
 stages:
+  - analyse
   - build
   - deploy
-  - release
+  - archive
 
-android:release:
-  stage: release
+analyse:
+  stage: analyse
   image: cirrusci/flutter:stable
   before_script:
-    - flutter packages get
+    - echo "GOOGLE_API_KEY=$GOOGLE_API_KEY" > .env
+    - flutter pub get
+  script:
+    - flutter analyze
+  only:
+    - main
+    - develop
+
+android:release:
+  stage: archive
+  image: cirrusci/flutter:stable
+  before_script:
+    - flutter pub get
     - flutter clean
   script:
     - flutter doctor --android-licenses
-    - flutter build apk --flavor ${FLAVOR} --release
+    - flutter build apk --release
   artifacts:
     paths:
       - "**/**/**/**/**/**/*.apk"
