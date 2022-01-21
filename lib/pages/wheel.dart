@@ -1,9 +1,12 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:wheeleat/pages/restaurant_details.dart';
 
 import '../constants.dart';
 import '../data/wheel_item.dart';
+import '../services/gps.dart';
+import '../services/places.dart';
 
 import '../components/page_title.dart';
 import '../components/wheel/wheel.dart';
@@ -20,11 +23,14 @@ class WheelPage extends StatefulWidget {
 
 class _WheelPageState extends State<WheelPage>
     with SingleTickerProviderStateMixin {
+  double longitude = 7.738757;
+  double latitude = 48.526559;
+
   double _angle = 0;
   double _current = 0;
   late AnimationController _ctrl;
   late Animation _ani;
-  final List<WheelItem> _items = [
+  List<WheelItem> items = [
     WheelItem(icon: Icons.restaurant_rounded, color: Colors.accents[0]),
     WheelItem(icon: Icons.fastfood_rounded, color: Colors.accents[2]),
     WheelItem(icon: Icons.local_pizza_rounded, color: Colors.accents[4]),
@@ -35,12 +41,61 @@ class _WheelPageState extends State<WheelPage>
     WheelItem(icon: Icons.brunch_dining_rounded, color: Colors.accents[14]),
   ];
 
+  Future<void> fetchNearbyRestaurants() async {
+    try {
+      var position = await getUserPosition();
+      latitude = position.latitude;
+      longitude = position.longitude;
+    } catch (error) {
+      longitude = 7.738757;
+      latitude = 48.526559;
+    }
+
+    try {
+      var restaurantResponse = await Places.getPlacesFromCoordinates(
+          latitude.toString(), longitude.toString());
+
+      int current = 0;
+      setState(() {
+        items = restaurantResponse.restaurants!
+            .where((e) => e.image != null)
+            .map((e) => WheelItem(
+                  restaurant: e,
+                  color: Colors.accents[(2 * (current++)) % 16],
+                ))
+            .toList()
+            .sublist(0, 8);
+      });
+    } catch (_) {
+      setState(() {
+        items = [
+          WheelItem(icon: Icons.restaurant_rounded, color: Colors.accents[0]),
+          WheelItem(icon: Icons.fastfood_rounded, color: Colors.accents[2]),
+          WheelItem(icon: Icons.local_pizza_rounded, color: Colors.accents[4]),
+          WheelItem(icon: Icons.coffee_rounded, color: Colors.accents[6]),
+          WheelItem(
+              icon: Icons.breakfast_dining_rounded, color: Colors.accents[8]),
+          WheelItem(
+              icon: Icons.dinner_dining_rounded, color: Colors.accents[10]),
+          WheelItem(
+              icon: Icons.lunch_dining_rounded, color: Colors.accents[12]),
+          WheelItem(
+              icon: Icons.brunch_dining_rounded, color: Colors.accents[14]),
+        ];
+      });
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     var _duration = const Duration(milliseconds: 5000);
     _ctrl = AnimationController(vsync: this, duration: _duration);
     _ani = CurvedAnimation(parent: _ctrl, curve: Curves.fastLinearToSlowEaseIn);
+
+    () async {
+      await fetchNearbyRestaurants();
+    }();
   }
 
   @override
@@ -69,7 +124,7 @@ class _WheelPageState extends State<WheelPage>
                             alignment: Alignment.center,
                             children: <Widget>[
                               Wheel(
-                                items: _items,
+                                items: items,
                                 current: _current,
                                 angle: _angle,
                               ),
@@ -124,18 +179,72 @@ class _WheelPageState extends State<WheelPage>
   }
 
   int _calIndex(value) {
-    var _base = (2 * pi / _items.length / 2) / (2 * pi);
-    return (((_base + value) % 1) * _items.length).floor();
+    var _base = (2 * pi / items.length / 2) / (2 * pi);
+    return (((_base + value) % 1) * items.length).floor();
   }
 
   _buildResult(_value) {
     var _index = _calIndex(_value * _angle + _current);
-    WheelItem item = _items[_index];
+    WheelItem item = items[_index];
+
+    if (_value == 1) {
+      () async {
+        var details = await getPlaceDetails(item.restaurant!);
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => RestaurantDetailsPage(
+              restaurant: item.restaurant!,
+              openingHours: details?.openingHours,
+              phone: details?.phone,
+            ),
+          ),
+        );
+      }();
+    }
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 16.0),
       child: Align(
         alignment: Alignment.bottomCenter,
-        child: WheelIcon(item, size: 36.0, padding: 18.0),
+        child: (item.restaurant != null)
+            ? GestureDetector(
+                onTap: () async {
+                  var details = await getPlaceDetails(item.restaurant!);
+
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => RestaurantDetailsPage(
+                        restaurant: item.restaurant!,
+                        openingHours: details?.openingHours,
+                        phone: details?.phone,
+                      ),
+                    ),
+                  );
+                },
+                child: Column(
+                  children: [
+                    CircleAvatar(
+                      backgroundImage: NetworkImage(item.restaurant!.image!),
+                      radius: 40,
+                    ),
+                    const SizedBox(height: defaultPadding),
+                    Text(
+                      item.restaurant!.title,
+                      softWrap: true,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        color: textColor,
+                        fontWeight: FontWeight.w900,
+                        fontSize: defaultPadding,
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            : WheelIcon(item, size: 36.0, padding: 18.0),
       ),
     );
   }
