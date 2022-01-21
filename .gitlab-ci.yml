@@ -13,7 +13,7 @@ build_test_web:
       - build/web
  
 deploy:
-  stage: deploy_main
+  stage: deploy
   before_script:
     - 'which ssh-agent || ( apt-get install -qq openssh-client )'
     - 'which rsync || ( apt-get install -qq rsync )'
