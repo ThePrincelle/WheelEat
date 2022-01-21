@@ -57,6 +57,9 @@ class _WheelPageState extends State<WheelPage>
       var restaurantResponse = await Places.getPlacesFromCoordinates(
           latitude.toString(), longitude.toString());
 
+      if (restaurantResponse.restaurants == null ||
+          restaurantResponse.restaurants!.isEmpty) throw Error();
+
       int current = 0;
       setState(() {
         items = restaurantResponse.restaurants!
@@ -189,7 +192,7 @@ class _WheelPageState extends State<WheelPage>
     var _index = _calIndex(_value * _angle + _current);
     WheelItem item = items[_index];
 
-    if (_value == 1) {
+    if (_value == 1 && item.restaurant != null) {
       () async {
         var details = await getPlaceDetails(item.restaurant!);
 
@@ -213,18 +216,20 @@ class _WheelPageState extends State<WheelPage>
         child: (item.restaurant != null)
             ? GestureDetector(
                 onTap: () async {
-                  var details = await getPlaceDetails(item.restaurant!);
+                  if (item.restaurant != null) {
+                    var details = await getPlaceDetails(item.restaurant!);
 
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => RestaurantDetailsPage(
-                        restaurant: item.restaurant!,
-                        openingHours: details?.openingHours,
-                        phone: details?.phone,
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => RestaurantDetailsPage(
+                          restaurant: item.restaurant!,
+                          openingHours: details?.openingHours,
+                          phone: details?.phone,
+                        ),
                       ),
-                    ),
-                  );
+                    );
+                  }
                 },
                 child: Column(
                   children: [

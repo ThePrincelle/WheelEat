@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../constants.dart';
-
 class Select extends StatefulWidget {
   final List<String> listValue;
   final String curentValue;
