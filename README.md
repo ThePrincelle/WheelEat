@@ -9,6 +9,8 @@
 
 Application de recherche de restaurant.
 
+Lien vers le Git : https://git.unistra.fr/princelle/wheeleat
+
 **Membres du groupe :**
 
 * BRUA Hugo (hbrua@etu.unistra.fr)
@@ -18,7 +20,7 @@ Application de recherche de restaurant.
 Cette application a été conçue avec Flutter. Elle est disponible sous iOS, Android et le web.
 
 - App Web : https://wheeleat.princelle.org
-- APK Android : <insérer l'url vers l'artifact>
+- APK Android : https://s3.princelle.org/share/wheeleat.apk
 - iOS : consultez la section '[Comment construire l'application en local](#comment-construire-lapplication-en-local-)'
 
 Le projet utilise les API's de Google : 
