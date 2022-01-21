@@ -42,7 +42,6 @@ web:build:
     - flutter pub get
   script:
     - flutter build web
-    - flutter analyze
   artifacts:
     paths:
       - build/web
