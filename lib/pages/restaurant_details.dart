@@ -105,13 +105,15 @@ class RestaurantDetailsPage extends StatelessWidget {
                                 color: primaryColor,
                               ),
                               const SizedBox(width: defaultPadding / 4),
-                              Text(
-                                restaurant.address ?? "No data available.",
-                                softWrap: true,
-                                style: const TextStyle(
-                                  color: textColor,
-                                  fontWeight: FontWeight.w900,
-                                  fontSize: defaultPadding,
+                              Expanded(
+                                child: Text(
+                                  restaurant.address ?? "No data available.",
+                                  softWrap: true,
+                                  style: const TextStyle(
+                                    color: textColor,
+                                    fontWeight: FontWeight.w900,
+                                    fontSize: defaultPadding,
+                                  ),
                                 ),
                               ),
                             ],
