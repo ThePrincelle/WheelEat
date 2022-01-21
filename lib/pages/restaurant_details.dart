@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../constants.dart';
 import '../data/restaurant.dart';
+import '../services/models/types/opening_hours.dart';
 
 import '../components/opened_closed_badge.dart';
 import '../components/price_tags.dart';
@@ -10,10 +11,14 @@ import '../components/schedule_table.dart';
 
 class RestaurantDetailsPage extends StatelessWidget {
   final Restaurant restaurant;
+  final OpeningHours? openingHours;
+  final String? phone;
 
   const RestaurantDetailsPage({
     Key? key,
     this.restaurant = const Restaurant(title: 'Placeholder'),
+    this.openingHours,
+    this.phone,
   }) : super(key: key);
 
   @override
@@ -63,6 +68,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                             width: double.infinity,
                             child: Text(
                               restaurant.title.toUpperCase(),
+                              softWrap: true,
                               textAlign: TextAlign.center,
                               style: const TextStyle(
                                 fontWeight: FontWeight.w900,
@@ -99,12 +105,15 @@ class RestaurantDetailsPage extends StatelessWidget {
                                 color: primaryColor,
                               ),
                               const SizedBox(width: defaultPadding / 4),
-                              Text(
-                                restaurant.address ?? "No data available.",
-                                style: const TextStyle(
-                                  color: textColor,
-                                  fontWeight: FontWeight.w900,
-                                  fontSize: defaultPadding,
+                              Expanded(
+                                child: Text(
+                                  restaurant.address ?? "No data available.",
+                                  softWrap: true,
+                                  style: const TextStyle(
+                                    color: textColor,
+                                    fontWeight: FontWeight.w900,
+                                    fontSize: defaultPadding,
+                                  ),
                                 ),
                               ),
                             ],
@@ -118,7 +127,10 @@ class RestaurantDetailsPage extends StatelessWidget {
                               ),
                               const SizedBox(width: defaultPadding / 4),
                               Text(
-                                restaurant.phone ?? "No data available.",
+                                restaurant.phone ??
+                                    phone ??
+                                    "No data available.",
+                                softWrap: true,
                                 style: const TextStyle(
                                   color: textColor,
                                   fontWeight: FontWeight.w900,
@@ -149,8 +161,8 @@ class RestaurantDetailsPage extends StatelessWidget {
                                       ),
                                     ),
                                     const SizedBox(height: defaultPadding / 2),
-                                    if (restaurant.schedule != null)
-                                      ScheduleTable(restaurant.schedule!)
+                                    if (openingHours != null)
+                                      ScheduleTable(openingHours!)
                                     else
                                       const Text(
                                         "No data available",
@@ -211,17 +223,6 @@ class RestaurantDetailsPage extends StatelessWidget {
                 color: lightTextColor,
                 icon: const Icon(
                   Icons.arrow_back_ios_new,
-                  size: defaultPadding * 1.25,
-                ),
-              ),
-            ),
-            CircleAvatar(
-              backgroundColor: Colors.black.withOpacity(0.7),
-              child: IconButton(
-                onPressed: () {}, // TODO: Update onPressed
-                color: lightTextColor,
-                icon: const Icon(
-                  Icons.more_vert_rounded,
                   size: defaultPadding * 1.25,
                 ),
               ),

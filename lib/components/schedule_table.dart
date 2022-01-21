@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 
 import '../constants.dart';
+import '../services/models/types/opening_hours.dart';
 
 class ScheduleTable extends StatelessWidget {
-  final Map<String, String> schedule;
+  final OpeningHours openingHours;
 
-  const ScheduleTable(this.schedule, {Key? key})
-      : assert(schedule.length == 7),
-        super(key: key);
+  const ScheduleTable(this.openingHours, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,30 +17,33 @@ class ScheduleTable extends StatelessWidget {
   }
 
   List<TableRow> _createRows() {
-    return schedule.entries
-        .map((entry) => TableRow(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: defaultPadding / 8,
-                  ),
-                  child: Text(
-                    entry.key,
-                    style: const TextStyle(
-                      color: textColor,
-                      fontSize: defaultPadding,
+    return openingHours.weekdayText
+            ?.map((entry) => TableRow(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: defaultPadding / 8,
+                      ),
+                      child: Text(
+                        entry.split(': ')[0],
+                        style: const TextStyle(
+                          color: textColor,
+                          fontSize: defaultPadding,
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-                Text(
-                  entry.value,
-                  style: const TextStyle(
-                    color: textColor,
-                    fontSize: defaultPadding,
-                  ),
-                ),
-              ],
-            ))
-        .toList();
+                    Text(
+                      entry.split(': ')[1],
+                      style: const TextStyle(
+                        color: textColor,
+                        fontSize: defaultPadding,
+                      ),
+                    ),
+                  ],
+                ))
+            .toList() ??
+        [
+          const TableRow(children: [Text('No data available.')])
+        ];
   }
 }
