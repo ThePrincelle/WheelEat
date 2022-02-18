@@ -1,0 +1,103 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+    
+  release:
+    types: [published]
+
+  workflow_dispatch:
+
+jobs:
+  analysis:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Install Flutter
+        uses: britannio/action-install-flutter@v1.1
+        
+      - name: Setup Env
+        run: echo "GOOGLE_API_KEY=${{ secrets.GOOGLE_API_KEY }}" > .env
+
+      - name: Get dependancies
+        run: flutter pub get
+          
+      - name: Perform analysis
+        run: flutter analyze
+  
+  build-android:
+    runs-on: ubuntu-latest
+    needs: [analysis]
+    steps:
+      - uses: actions/checkout@v2
+    
+      - name: Install Flutter
+        uses: britannio/action-install-flutter@v1.1
+        
+      - name: Setup Env
+        run: echo "GOOGLE_API_KEY=${{ secrets.GOOGLE_API_KEY }}" > .env
+    
+      - name: Get dependancies
+        run: flutter pub get
+        
+      - name: Clean
+        run: flutter clean
+        
+      - name: Check Android Licences
+        run: flutter doctor --android-licenses
+        
+      - name: Build
+        run: flutter build apk --release
+          
+      - name: Upload Android APK
+        uses: actions/upload-artifact@v2
+        with:
+          name: wheeleat.apk
+          path: build/app/outputs/flutter-apk/app-release.apk
+          
+  build-webapp:
+    runs-on: ubuntu-latest
+    needs: [analysis]
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Install Flutter
+        uses: britannio/action-install-flutter@v1.1
+
+      - name: Setup Env
+        run: echo "GOOGLE_API_KEY=${{ secrets.GOOGLE_API_KEY }}" > .env
+
+      - name: Get dependancies
+        run: flutter pub get
+
+      - name: Build
+        run: flutter build web
+
+      - name: Upload WebApp build
+        uses: actions/upload-artifact@v2
+        with:
+          name: webapp_latest
+          path: build/web
+          
+  deploy:
+    if: contains(github.ref, 'main')
+    runs-on: ubuntu-latest
+    needs: [analysis, build-webapp]
+    steps:
+      - name: Download WebApp artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: webapp_latest
+          path: build/web
+    
+      - name: Deploy to Infomaniak
+        uses: easingthemes/ssh-deploy@main
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }}
+          ARGS: "-rltgoDzvO --delete"
+          SOURCE: "build/web/"
+          REMOTE_HOST: 464i8.ftp.infomaniak.com
+          REMOTE_USER: 464i8_ci
+          TARGET: /home/clients/04cd6fa9bfb5342793851e99c0041e14/sites/uni/wheeleat
