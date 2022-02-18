@@ -29,17 +29,10 @@ jobs:
   
   build-android:
     runs-on: ubuntu-latest
+    container: cirrusci/flutter:stable
     needs: [analysis]
     steps:
       - uses: actions/checkout@v2
-      
-      - name: Install Java
-        uses: actions/setup-java@v1
-        with:
-          java-version: "12.x"
-        
-      - name: Install Flutter
-        uses: subosito/flutter-action@v1
         
       - name: Setup Env
         run: echo "GOOGLE_API_KEY=${{ secrets.GOOGLE_API_KEY }}" > .env
@@ -50,8 +43,8 @@ jobs:
       - name: Clean
         run: flutter clean
         
-      #- name: Check Android Licences
-      #  run: flutter doctor --android-licenses
+      - name: Check Android Licences
+        run: flutter doctor --android-licenses
         
       - name: Build
         run: flutter build apk --release
