@@ -27,33 +27,33 @@ jobs:
       - name: Perform analysis
         run: flutter analyze
   
-  build-android:
-    runs-on: ubuntu-latest
-    container: cirrusci/flutter:stable
-    needs: [analysis]
-    steps:
-      - uses: actions/checkout@v2
-        
-      - name: Setup Env
-        run: echo "GOOGLE_API_KEY=${{ secrets.GOOGLE_API_KEY }}" > .env
-    
-      - name: Get dependancies
-        run: flutter pub get
-        
-      - name: Clean
-        run: flutter clean
-        
-      - name: Check Android Licences
-        run: flutter doctor --android-licenses
-        
-      - name: Build
-        run: flutter build apk --release
-          
-      - name: Upload Android APK
-        uses: actions/upload-artifact@v2
-        with:
-          name: wheeleat.apk
-          path: build/app/outputs/flutter-apk/app-release.apk
+  #build-android:
+  #  runs-on: ubuntu-latest
+  #  container: cirrusci/flutter:stable
+  #  needs: [analysis]
+  #  steps:
+  #    - uses: actions/checkout@v2
+  #      
+  #    - name: Setup Env
+  #      run: echo "GOOGLE_API_KEY=${{ secrets.GOOGLE_API_KEY }}" > .env
+  #  
+  #    - name: Get dependancies
+  #      run: flutter pub get
+  #      
+  #    - name: Clean
+  #      run: flutter clean
+  #      
+  #    - name: Check Android Licences
+  #      run: flutter doctor --android-licenses
+  #      
+  #    - name: Build
+  #      run: flutter build apk --release
+  #        
+  #    - name: Upload Android APK
+  #      uses: actions/upload-artifact@v2
+  #      with:
+  #        name: wheeleat.apk
+  #        path: build/app/outputs/flutter-apk/app-release.apk
           
   build-webapp:
     runs-on: ubuntu-latest
