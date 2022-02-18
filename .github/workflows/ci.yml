@@ -50,8 +50,8 @@ jobs:
       - name: Clean
         run: flutter clean
         
-      - name: Check Android Licences
-        run: flutter doctor --android-licenses
+      #- name: Check Android Licences
+      #  run: flutter doctor --android-licenses
         
       - name: Build
         run: flutter build apk --release
